@@ -1,0 +1,54 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Build and Test
+        run: dotnet build --configuration Release
+
+      - name: Publish Release
+        id: publish
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          release_name: Release v1.0.${{ github.run_number }}
+          body: |
+            Changes in this Release:
+            - Added new features
+            - Fixed some bugs
+          draft: false
+          prerelease: false
+
+      - name: Upload Windows Binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'windows-binary'
+          path: './bin/Release/net5.0/win-x64/publish'
+
+      - name: Upload Mac Binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'mac-binary'
+          path: './bin/Release/net5.0/osx-x64/publish'
+
+      - name: Upload Linux Binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: 'linux-binary'
+          path: './bin/Release/net5.0/linux-x64/publish'
