@@ -1,0 +1,30 @@
+name: Test on Push to Master
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Build and Test
+        run: dotnet test --configuration Release --logger "trx;LogFileName=testresults.xml"
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: testresults.xml
