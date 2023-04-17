@@ -1,0 +1,16 @@
+name: Greetings
+
+on: [pull_request_target, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: "Hey there,\n\nIt looks like this is your first issue, so welcome to the project! It's awesome to have people like you contributing code, ideas, and even (some nice) criticism. :smile:\n\nRemember to follow the community guidelines, make sure your issue has labels and isn't a duplicate, and be kind. That's all for now, so stay awesome!\n\nCheers,\nThe Sledge Team"
+        pr-message: "Hey!!!\n\nThis looks like your first pull request– isn't that awesome?! Before we continue though, we have to make sure that we've got everything checked off the list.\n\n- How many features are you adding with this pull request? *If the answer is more than one feature, then let's split the PR into a couple of different PRs.*\n\n- Have you made sure that all of the code works and follows the style guide? *If the code doesn't work, it gets auto-rejected by the robots (🤖). And, if it doesn't follow the style guide then it just means more work for Terry (poor Terry :pensive:).*\n\n- Does it have any documentation? *If the code doesn't have documentation, and it's hard to follow, it will probably get rejected. That's because if people don't understand our project's code, it leads to fewer contributors.*\n\n- Can it be simpler? *If the code can be simpler, then try to. If you don't make the changes because you don't know how or don't have the energy (we get it), don't worry, just tell us what can be changed and we'll do it.*\n\n- Are there problems with it? *If there are problems, that doesn't mean the code will be rejected. Just let us know what some of the problems are, and we can help fix them.*\n\nNobody is perfect (especially not Terry), so we understand if the pull request isn't the best pull request in the world (if it was that would be incredible). A tip to the wise: don't stress too much about your PR, it's probably awesome.\n\nAll the best,\nThe Sledge Team"
