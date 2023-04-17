@@ -33,5 +33,6 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
+          allowUpdates: true
           artifacts: "Sledge-OSX.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
