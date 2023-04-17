@@ -1,4 +1,4 @@
-# Sledge: An Open-Source 3D-Level Editing Tool
+# ![Sledge: An Open-Source 3D-Level Editing Tool](https://github.com/William-McGonagle/sledge/raw/master/.github/banner.svg)
 
 Sledge is a powerful, open-source, enterprise-level, 3D-level editing tool. Openly-available under the [Sledge License](./license.md), the tool is community-driven and includes features such as a plugin system, real-time collaboration, and much much more.
 
