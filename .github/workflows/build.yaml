@@ -21,35 +21,23 @@ jobs:
       - name: Build and Test
         run: dotnet build --configuration Release
 
-      - name: Publish Release
-        id: publish
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release:
-            - Added new features
-            - Fixed some bugs
-          draft: false
-          prerelease: false
-
       - name: Upload Windows Binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-release-asset@v1
         with:
-          name: 'windows-binary'
-          path: './bin/Release/net5.0/win-x64/publish'
+          asset_name: 'windows-binary'
+          asset_path: './bin/Release/net5.0/win-x64/publish'
+          asset_content_type: application/zip
 
       - name: Upload Mac Binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-release-asset@v1
         with:
-          name: 'mac-binary'
-          path: './bin/Release/net5.0/osx-x64/publish'
+          asset_name: 'mac-binary'
+          asset_path: './bin/Release/net5.0/osx-x64/publish'
+          asset_content_type: application/zip
 
       - name: Upload Linux Binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-release-asset@v1
         with:
-          name: 'linux-binary'
-          path: './bin/Release/net5.0/linux-x64/publish'
+          asset_name: 'linux-binary'
+          asset_path: './bin/Release/net5.0/linux-x64/publish'
+          asset_content_type: application/zip
