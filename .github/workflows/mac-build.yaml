@@ -3,7 +3,7 @@ name: Build and Publish macOS App
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-publish:
