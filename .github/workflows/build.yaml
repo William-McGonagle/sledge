@@ -1,43 +1,37 @@
-name: Build and Release
+name: Build
 
 on:
   push:
-    # Sequence of patterns matched against refs/tags
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - "*"
+
+# on:
+#   push:
+#     branches:
+#       - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
 
+    steps:
+      - uses: actions/checkout@v2
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.x'
-
-      - name: Build and Test
-        run: dotnet build --configuration Release
-
-      - name: Upload Windows Binary
-        uses: actions/upload-release-asset@v1
+          dotnet-version: 5.0.x
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Build the Project
+        run: dotnet build --no-restore
+      - name: Test the Code
+        run: dotnet test --no-build --verbosity normal
+      - name: Build for MacOS
+        run: dotnet publish -r osx-x64 -p:PublishSingleFile=true --self-contained true -p:PublishReadyToRun=false
+      - name: Bundle for MacOS
+        run: mkdir Sledge.app; mkdir Sledge.app/Contents; mkdir Sledge.app/Contents/MacOS; mv "bin/Debug/net5.0/osx-x64/publish/render" "Sledge.app/Contents/MacOS/Sledge"; zip -r "Sledge-OSX.zip" "Sledge.app"
+      - name: Release
+        uses: ncipollo/release-action@v1
         with:
-          asset_name: 'windows-binary'
-          asset_path: './bin/Release/net5.0/win-x64/publish'
-          asset_content_type: application/zip
-
-      - name: Upload Mac Binary
-        uses: actions/upload-release-asset@v1
-        with:
-          asset_name: 'mac-binary'
-          asset_path: './bin/Release/net5.0/osx-x64/publish'
-          asset_content_type: application/zip
-
-      - name: Upload Linux Binary
-        uses: actions/upload-release-asset@v1
-        with:
-          asset_name: 'linux-binary'
-          asset_path: './bin/Release/net5.0/linux-x64/publish'
-          asset_content_type: application/zip
+          artifacts: "Sledge-OSX.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
