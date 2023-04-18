@@ -16,5 +16,7 @@
 	<string>APPL</string>
 	<key>CFBundleVersion</key>
 	<string>v1.0.0</string>
+	<key>CFBundleIconFile</key>
+	<string>Icon.icns</string>
 </dict>
 </plist>
