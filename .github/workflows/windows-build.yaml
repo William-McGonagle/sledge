@@ -29,10 +29,10 @@ jobs:
       - name: Build for Windows
         run: dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -p:PublishReadyToRun=false
       - name: Rename for Publishing
-        run: mv "bin/Debug/net5.0/win-x64/publish/sledge" "bin/Debug/net5.0/win-x64/publish/sledge-win-x64"
+        run: mv "bin/Debug/net5.0/win-x64/publish/sledge.exe" "bin/Debug/net5.0/win-x64/publish/sledge-win-x64.exe"
       - name: Release
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          artifacts: "bin/Debug/net5.0/win-x64/publish/sledge-win-x64"
+          artifacts: "bin/Debug/net5.0/win-x64/publish/sledge-win-x64.exe"
           token: ${{ secrets.GITHUB_TOKEN }}
