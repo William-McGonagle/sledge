@@ -1,4 +1,4 @@
-name: Build
+name: Build for MacOS
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
       - name: Build for MacOS
         run: dotnet publish -r osx-x64 -p:PublishSingleFile=true --self-contained true -p:PublishReadyToRun=false
       - name: Bundle for MacOS
-        run: mkdir Sledge.app; mkdir Sledge.app/Contents; mkdir Sledge.app/Contents/MacOS; mv "bin/Debug/net5.0/osx-x64/publish/sledge" "Sledge.app/Contents/MacOS/Sledge"; zip -r "Sledge-OSX.zip" "Sledge.app"
+        run: mkdir Sledge.app; mkdir Sledge.app/Contents; mkdir Sledge.app/Contents/MacOS; mv "bin/Debug/net5.0/osx-x64/publish/*" "Sledge.app/Contents/MacOS"; cp ".github/build/Info.plist" "Sledge.app/Contents/Info.plist"; zip -r "Sledge-OSX.zip" "Sledge.app"
       - name: Release
         uses: ncipollo/release-action@v1
         with:

@@ -99,7 +99,7 @@ namespace Sledge
                     ShaderProgram cubeShaderProgram = new ShaderProgram(vertexShaderSource, fragmentShaderSource);
 
                     // Create mesh for cube with custom shader and material
-                    Mesh3D cubeMesh = Mesh3D.LoadObj("./box.obj", cubeShaderProgram, cubeMaterial);
+                    // Mesh3D cubeMesh = Mesh3D.LoadObj("./box.obj", cubeShaderProgram, cubeMaterial);
                     Mesh3D sideCubeMesh = new Mesh3D(cubeVertices, cubeIndices, cubeShaderProgram, cubeMaterial);
 
                     // Set up camera
@@ -108,7 +108,7 @@ namespace Sledge
 
                     // Set up scene with cube
                     Scene3D scene = new Scene3D();
-                    scene.AddMesh(cubeMesh);
+                    // scene.AddMesh(cubeMesh);
                     scene.AddMesh(sideCubeMesh);
 
                     float time = 0;
@@ -138,11 +138,11 @@ namespace Sledge
 
                         // Update cube rotation
                         time += (float)sender2.Time;
-                        cubeMesh.ModelMatrix = Matrix4.CreateRotationY(time);
+                        // cubeMesh.ModelMatrix = Matrix4.CreateRotationY(time);
                         sideCubeMesh.ModelMatrix = Matrix4.CreateTranslation(2, 0, 0);
 
                         // Render scene
-                        cubeMesh.Render(viewMatrix, projectionMatrix);
+                        scene.Render(viewMatrix, projectionMatrix);
                         uiRenderer.DrawRectangle(40, 40, 400, 500, new Vector4(0, 1, 0, 1));
 
                         sideCubeMesh.RenderWireframe(viewMatrix, projectionMatrix);
