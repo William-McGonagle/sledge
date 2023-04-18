@@ -1,0 +1,38 @@
+name: Build for Windows
+
+on:
+  push:
+    tags:
+      - "*"
+
+# on:
+#   push:
+#     branches:
+#       - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Build the Project
+        run: dotnet build --no-restore
+      - name: Test the Code
+        run: dotnet test --no-build --verbosity normal
+      - name: Build for Windows
+        run: dotnet publish -r win-x64 -p:PublishSingleFile=true --self-contained true -p:PublishReadyToRun=false
+      - name: Rename for Publishing
+        run: mv "bin/Debug/net5.0/win-x64/publish/sledge" "bin/Debug/net5.0/win-x64/publish/sledge-win-x64"
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: "bin/Debug/net5.0/win-x64/publish/sledge-win-x64"
+          token: ${{ secrets.GITHUB_TOKEN }}
