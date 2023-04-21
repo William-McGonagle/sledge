@@ -187,17 +187,38 @@ public class Mesh3D
                             var faceIndices = faceToken.Split('/')
                                 .Select(x => string.IsNullOrEmpty(x) ? 0 : uint.Parse(x))
                                 .ToArray();
-                            if (faceIndices.Length >= 1 && faceIndices[0] > 0)
+
+                            if (faceIndices.Length < 3)
                             {
-                                indices.Add(faceIndices[0] - 1);
+                                /// Face token doesn't contain enough indices, we thus need to skip
+                                continue;
                             }
+                            if (faceIndices.Length > 3)
+                            {
+                                /// Face token contains extra indices, only use the first three (working on triangles, OpenGl4)
+                                faceIndices = faceIndices.Take(3).ToArray();
+                            }
+                            var vertexIndex = faceIndices[0] - 1;
+                            var normalIndex = faceIndices[2] - 1;
+                            if (vertexIndex < 0 || vertexIndex >= vertices.Count ||
+                                normalIndex < 0 || normalIndex >= normals.Count)
+                            {
+                                /// Indices are out of range, skip the face
+                                continue;
+                            }
+                            indices.Add((uint)vertexIndex);
+                            indices.Add((uint)normalIndex);
+
+                            /// Add indices for the other primitive types as well
                             if (faceIndices.Length >= 2 && faceIndices[1] > 0)
                             {
-                                // We don't do anything with texture coordinates for now
-                            }
-                            if (faceIndices.Length >= 3 && faceIndices[2] > 0)
-                            {
-                                indices.Add(faceIndices[2] - 1);
+                                var texCoordIndex = faceIndices[1] - 1;
+                                if (texCoordIndex < 0 || texCoordIndex >= texCoords.Count)
+                                {
+                                    /// Texture coordinate index is out of range, skip it
+                                    continue;
+                                }
+                                indices.Add((uint)texCoordIndex);
                             }
                         }
                         break;
