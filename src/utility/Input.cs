@@ -5,7 +5,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 /// <summary>
 /// This class manages the inputs happening in each GameWindow.
 /// </summary>
-public static class InputManager
+public static class Input
 {
     /// <summary>
     /// The keyboard states for each GameWindow.

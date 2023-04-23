@@ -34,9 +34,8 @@ namespace Sledge
                 gameWindow.Load += () =>
                 {
 
-                    InputManager.Init(1);
-
-                    UIRenderer uiRenderer = new UIRenderer(gameWindow.Size.X, gameWindow.Size.Y);
+                    Input.Init(1);
+                    UI.Init(gameWindow);
 
                     // Set clear color
                     GL.ClearColor(0.2f, 0.3f, 0.4f, 1.0f);
@@ -116,16 +115,15 @@ namespace Sledge
                     gameWindow.UpdateFrame += (e) =>
                     {
 
-                        InputManager.Update(gameWindow);
+                        Input.Update(gameWindow);
 
                     };
 
                     gameWindow.Resize += (e) =>
                     {
 
-                        GL.Viewport(0, 0, gameWindow.Size.X, gameWindow.Size.Y);
-
-                        uiRenderer.Resize(gameWindow.Size.X, gameWindow.Size.Y);
+                        GL.Viewport(0, 0, gameWindow.Size.X * 2, gameWindow.Size.Y * 2);
+                        UI.Resize(gameWindow);
 
                     };
 
@@ -143,7 +141,9 @@ namespace Sledge
 
                         // Render scene
                         scene.Render(viewMatrix, projectionMatrix);
-                        uiRenderer.DrawRectangle(40, 40, 400, 500, new Vector4(0, 1, 0, 1));
+                        // uiRenderer.DrawRectangle(40, 40, 400, 500, new Vector4(0, 1, 0, 1));
+                        UI.Button(new Rect(0, 0, 100, 40), "Hello");
+                        UI.Button(new Rect(0, 45, 100, 40), "Hello");
 
                         sideCubeMesh.RenderWireframe(viewMatrix, projectionMatrix);
 
