@@ -2,6 +2,9 @@ using System;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
+/// <summary>
+/// Responsible for rendering UI elements
+/// </summary>
 public class UIRenderer
 {
     private int vertexArrayObject;
@@ -10,6 +13,12 @@ public class UIRenderer
     private int shaderProgram;
     private Matrix4 projectionMatrix;
 
+    /// <summary>
+    /// Creates a new UIRenderer
+    /// </summary>
+    /// <example>UIRenderer renderer = new UIRenderer(800, 600);</example>
+    /// <param name="screenWidth"></param>
+    /// <param name="screenHeight"></param>
     public UIRenderer(int screenWidth, int screenHeight)
     {
         // Create Vertex Array Object
@@ -28,6 +37,14 @@ public class UIRenderer
         projectionMatrix = Matrix4.CreateOrthographicOffCenter(0, screenWidth, screenHeight, 0, -100, 1);
     }
 
+    /// <summary>
+    /// Resizes the window and updates the projection matrix
+    /// </summary>
+    /// <example>
+    /// renderer.Resize(800, 600);
+    /// </example>
+    /// <param name="screenWidth"></param>
+    /// <param name="screenHeight"></param>
     public void Resize(int screenWidth, int screenHeight)
     {
 
@@ -36,6 +53,15 @@ public class UIRenderer
 
     }
 
+    /// <summary>
+    /// Draws a rectangle with the specified position, size, and color
+    /// </summary>
+    /// <example>renderer.DrawRectangle(0, 0, 100, 100, new Vector4(1, 0, 0, 1));</example>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="color"></param>
     public void DrawRectangle(int x, int y, int width, int height, Vector4 color)
     {
         // Define the four vertices of the rectangle
@@ -88,6 +114,11 @@ public class UIRenderer
         GL.DisableVertexAttribArray(positionLocation);
     }
 
+    /// <summary>
+    /// Loads and compiles the vertex and fragment shaders and links them into a shader program
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ApplicationException"></exception>
     private int CreateShaderProgram()
     {
         string vertexShaderSource = @"
@@ -163,6 +194,9 @@ public class UIRenderer
         return shaderProgram;
     }
 
+    /// <summary>
+    /// Disposes of the vertex array object, vertex buffer object, element buffer object, and shader program
+    /// </summary>
     public void Dispose()
     {
         GL.DeleteBuffer(vertexBufferObject);
